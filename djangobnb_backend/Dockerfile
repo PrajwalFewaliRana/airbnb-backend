@@ -13,7 +13,7 @@ RUN pip install -r requirements.txt
 
 COPY ./entrypoint.sh .
 RUN sed -i 's/\r$//g' /usr/src/djangobnb_backend/entrypoint.sh
-RUN shmod +x /usr/src/djangobnb_backend/entrypoint.sh
+RUN chmod +x /usr/src/djangobnb_backend/entrypoint.sh
 
 
 COPY . .
