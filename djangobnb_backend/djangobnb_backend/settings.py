@@ -30,7 +30,7 @@ SIMPLE_JWT ={
     "BLACKLIST_AFTER_ROTATION":False,
     "UPDATE_LAST_LOGIN":True,
     "SIGNING_KEY":'acomplexkey',
-    "ALGORITHM":"H5512",
+    "ALGORITHM":"HS256",
 }
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD=None
@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     
     'rest_framework',
     'rest_framework.authtoken',
@@ -83,6 +84,8 @@ INSTALLED_APPS = [
     'useraccount',
     'property',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
