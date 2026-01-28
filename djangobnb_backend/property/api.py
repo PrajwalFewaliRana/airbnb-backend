@@ -2,10 +2,10 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view,authentication_classes,permission_classes
 
 from .models import Property,Reservation
-from .serializers import PropertiesListSerializer
+ 
 from .forms import PropertyForm
 
-from property.serializers import PropertiesDetailSerializer
+from .serializers import PropertiesDetailSerializer,PropertiesListSerializer,ReservationsListSerializer
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import AllowAny
@@ -36,6 +36,9 @@ def create_property(request):
     else:
         print('error',form.errors,form.non_field_errors)
         return JsonResponse({'errors':form.errors.as_json()},status =400)
+ 
+ 
+ 
     
     
 @api_view(['GET'])
@@ -45,9 +48,24 @@ def properties_detail(request,pk):
     property = Property.objects.get(pk=pk)
     serializer = PropertiesDetailSerializer(property,many=False)
     return JsonResponse(serializer.data)
+
+
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def property_reservations(request,pk):
+    property = Property.objects.get(pk=pk)
+    reservations = property.reservations.all()
+    serializer = ReservationsListSerializer(reservations,many=True)
+    return JsonResponse(serializer.data,safe=False)
     
+ 
+ 
+ 
     
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def book_property(request,pk):
     try:
         start_date = request.POST.get('start_date','')
@@ -67,6 +85,8 @@ def book_property(request,pk):
             guests=guests,
             created_by=request.user
         )
+        
+        return JsonResponse({'success':True})
         
     except Exception as e:
         print('Error',e)
